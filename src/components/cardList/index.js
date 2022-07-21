@@ -1,22 +1,22 @@
 import React from "react";
 // import PropTypes from "prop-types";
-import Card from "../card";
+import CardView from "../card";
 
 /**
  * Component CardList that display a set of cards from an array of data card model.
  */
-const CardList = ({ cards }) => {
+const CardListView = ({ deck, flipCard }) => {
   return (
     <div>
-      {cards.map((card) => (
-        <Card key={card.uuid} {...card} />
+      {deck.map((card, index) => (
+        <CardView key={`${card.uuid}-${index}`} {...card} flipCard={flipCard} />
       ))}
     </div>
   );
 };
 
-// CardList.propTypes = {
+// CardListView.propTypes = {
 //   cards: PropTypes.arrayOf(Card.propTypes).isRequired,
 // };
 
-export default CardList;
+export default CardListView;

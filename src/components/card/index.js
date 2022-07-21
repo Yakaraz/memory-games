@@ -4,16 +4,16 @@ import React from "react";
 /**
  * Component Card that display a card from a data card model
  */
-const Card = ({ url, title, uuid }) => (
-  <div>
+const CardView = ({ url, title, uuid, flipCard }) => (
+  <a onClick={() => flipCard(uuid)}>
     <img src={url} alt={title} />
-  </div>
+  </a>
 );
 
-// Card.propTypes = {
+// CardView.propTypes = {
 //   uuid: PropTypes.string.isRequired,
 //   url: PropTypes.string.isRequired,
 //   title: PropTypes.string,
 // };
 
-export default Card;
+export default CardView;

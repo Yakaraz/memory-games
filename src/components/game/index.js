@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 // import PropTypes from "prop-types";
-import CardList from "../cardList";
+import { shuffle, concat, cloneDeep } from "lodash";
 import { db } from "../../db";
+import CardListView from "../cardList";
+import Card from "../../models/card.model";
+import Game from "../../models/game.model";
 
 /**
  * Component
  */
-const Game = () => {
-  const initialCards = [
+const GameView = () => {
+  const initialImages = [
     {
       url: "https://picsum.photos/201",
       title: "bip",
@@ -19,34 +22,39 @@ const Game = () => {
       uuid: "a5933fa2-07fa-439d-9f47-2d98df6c7e26",
     },
   ];
-  const [cards, setCards] = useState([]);
+  // const [cards, setCards] = useState([]);
+  const [game, setGame] = useState(new Game());
+  const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
+  const setDeck = (deck) => setGame((oldGame) => oldGame.setDeck(deck));
 
   // On mount (once), we load the cards from the store
   useEffect(() => {
-    const loadFromIndexDB = async () => {
-      let cards = await db.cards.toArray();
-      if (cards.length === 0) {
-        const cardsIds = await db.cards.bulkAdd(initialCards, {
+    const loadImages = async () => {
+      let images = await db.images.toArray();
+      if (images.length === 0) {
+        const imagesIds = await db.images.bulkAdd(initialImages, {
           allKeys: "true",
         });
-        cards = await db.cards.bulkGet(cardsIds);
+        images = await db.images.bulkGet(imagesIds);
       }
-      setCards(cards);
+      const cards = images.map((img) => new Card(img));
+      const deck = shuffle(concat(cards, cloneDeep(cards)));
+      setDeck(deck);
     };
-    loadFromIndexDB().catch((e) => console.error(e));
+    loadImages().catch((e) => console.error(e));
 
-    return () => setCards([]);
+    return () => setDeck([]);
   }, []);
 
   return (
     <div>
-      <CardList cards={cards} />
+      <CardListView deck={game.deck} flipCard={flipCard} />
     </div>
   );
 };
 
-// Game.propTypes = {
+// GameView.propTypes = {
 //   cards: PropTypes.arrayOf(Card.propTypes).isRequired,
 // };
 
-export default Game;
+export default GameView;

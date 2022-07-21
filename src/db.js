@@ -2,5 +2,5 @@ import Dexie from "dexie";
 
 export const db = new Dexie("memory");
 db.version(1).stores({
-  cards: "++uuid", // Primary key and indexed props
+  images: "++uuid", // Primary key and indexed props
 });
