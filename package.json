@@ -1,0 +1,28 @@
+{
+  "name": "memory-games",
+  "version": "1.0.0",
+  "private": true,
+  "description": "memory-games",
+  "author": "Souchet Paul",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "gatsby": "^4.19.1",
+    "gatsby-plugin-image": "^2.19.0",
+    "gatsby-plugin-react-helmet": "^5.19.0",
+    "gatsby-plugin-sharp": "^4.19.0",
+    "gatsby-source-filesystem": "^4.19.0",
+    "gatsby-transformer-sharp": "^4.19.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-helmet": "^6.1.0"
+  }
+}
