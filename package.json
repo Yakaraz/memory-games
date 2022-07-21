@@ -15,6 +15,7 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "dexie": "^3.2.2",
     "gatsby": "^4.19.1",
     "gatsby-plugin-image": "^2.19.0",
     "gatsby-plugin-react-helmet": "^5.19.0",
