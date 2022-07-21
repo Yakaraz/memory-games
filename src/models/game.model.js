@@ -9,9 +9,10 @@ class Game {
     const res = cloneDeep(this);
     const card = res.deck.find((card) => card.uuid === uuid);
     card.flip();
-    res.hand.push(card.uuid);
+    res.hand.push(card);
     return res;
   }
+
   setDeck(deck) {
     const res = cloneDeep(this);
     res.deck = deck;

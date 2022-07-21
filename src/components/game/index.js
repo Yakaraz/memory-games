@@ -37,8 +37,9 @@ const GameView = () => {
         });
         images = await db.images.bulkGet(imagesIds);
       }
-      const cards = images.map((img) => new Card(img));
-      const deck = shuffle(concat(cards, cloneDeep(cards)));
+      const imagesClone = cloneDeep(images);
+      const newImages = concat(images, imagesClone);
+      const deck = shuffle(newImages.map((img) => new Card(img)));
       setDeck(deck);
     };
     loadImages().catch((e) => console.error(e));

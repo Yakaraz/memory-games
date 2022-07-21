@@ -1,6 +1,9 @@
+import { v4 as uuidv4 } from "uuid";
+
 class Card {
   constructor(image) {
-    this.uuid = image.uuid;
+    this.uuid = uuidv4();
+    this.code = image.uuid;
     this.url = image.url;
     this.title = image.title;
     this.flipped = false;
