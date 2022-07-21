@@ -7,7 +7,7 @@ import Card from "../../models/card.model";
 import Game from "../../models/game.model";
 
 /**
- * Component
+ * Component GameView that show a board of cards
  */
 const GameView = () => {
   const initialImages = [

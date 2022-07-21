@@ -14,6 +14,10 @@ class Card {
     this.flipped = !this.flipped;
   }
 
+  isFlipped() {
+    return this.flipped;
+  }
+
   setFound() {
     this.found = true;
   }

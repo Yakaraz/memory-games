@@ -5,9 +5,9 @@ import React from "react";
  * Component Card that display a card from a data card model
  */
 const CardView = ({ url, title, uuid, flipCard }) => (
-  <a onClick={() => flipCard(uuid)}>
+  <div onClick={() => flipCard(uuid)}>
     <img src={url} alt={title} />
-  </a>
+  </div>
 );
 
 // CardView.propTypes = {
