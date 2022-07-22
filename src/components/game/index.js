@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 // import PropTypes from "prop-types";
 import { shuffle, concat, cloneDeep } from "lodash";
 import { db } from "../../db";
 import CardListView from "../cardList";
 import Card from "../../models/card.model";
-import Game from "../../models/game.model";
+import { Game, GameState } from "../../models/game.model";
 
 /**
  * Component GameView that show a board of cards
@@ -22,16 +22,14 @@ const GameView = () => {
       uuid: "a5933fa2-07fa-439d-9f47-2d98df6c7e26",
     },
   ];
-  // const [cards, setCards] = useState([]);
+
   const [game, setGame] = useState(new Game());
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
   const validateHand = () => setGame((oldGame) => oldGame.validateHand());
+  const emptyHand = () => setGame((oldGame) => oldGame.emptyHand());
+
   const hasWon = () => setGame((oldGame) => oldGame.hasWon());
-  const checkCard = (uuid) => {
-    flipCard(uuid);
-    validateHand();
-    hasWon();
-  };
+
   const setDeck = (deck) => setGame((oldGame) => oldGame.setDeck(deck));
 
   // On mount (once), we load the cards from the store
@@ -54,9 +52,24 @@ const GameView = () => {
     return () => setDeck([]);
   }, []);
 
+  useEffect(() => {
+    let timeout;
+    if (game.state === GameState.VALIDATE) {
+      timeout = setTimeout(() => {
+        validateHand();
+      }, 800);
+    } else if (game.state === GameState.EMPTY) {
+      emptyHand();
+    } else if (game.state === GameState.WON) {
+      hasWon();
+    }
+
+    return () => window.clearTimeout(timeout);
+  }, [game]);
+
   return (
     <div>
-      <CardListView deck={game.deck} flipCard={checkCard} />
+      <CardListView deck={game.deck} flipCard={flipCard} />
     </div>
   );
 };
