@@ -25,6 +25,13 @@ const GameView = () => {
   // const [cards, setCards] = useState([]);
   const [game, setGame] = useState(new Game());
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
+  const validateHand = () => setGame((oldGame) => oldGame.validateHand());
+  const hasWon = () => setGame((oldGame) => oldGame.hasWon());
+  const checkCard = (uuid) => {
+    flipCard(uuid);
+    validateHand();
+    hasWon();
+  };
   const setDeck = (deck) => setGame((oldGame) => oldGame.setDeck(deck));
 
   // On mount (once), we load the cards from the store
@@ -49,7 +56,7 @@ const GameView = () => {
 
   return (
     <div>
-      <CardListView deck={game.deck} flipCard={flipCard} />
+      <CardListView deck={game.deck} flipCard={checkCard} />
     </div>
   );
 };

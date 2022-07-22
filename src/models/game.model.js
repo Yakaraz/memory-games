@@ -4,6 +4,7 @@ class Game {
     this.deck = [];
     this.hand = [];
     this.won = false;
+    this.animating = false;
   }
 
   flipCard(uuid) {
@@ -13,26 +14,32 @@ class Game {
       if (!card.flipped) {
         card.flip();
         res.hand.push(card);
-        this.validateHand(res);
       }
     }
-    this.hasWon(res);
     return res;
   }
 
-  validateHand(res) {
-    if (res.hand.length === 2) {
-      if (res.hand[0].code === res.hand[1].code) {
-        res.hand.forEach((card) => (card.found = true));
-      } else {
-        res.hand.forEach((card) => card.flip());
-      }
-      res.hand = [];
+  validateHand() {
+    const res = cloneDeep(this);
+    if (res.hand.length === 2 && !res.animating) {
+      res.animating = true;
+      setTimeout(() => {
+        if (res.hand[0].code === res.hand[1].code) {
+          res.hand.forEach((card) => (card.found = true));
+        } else {
+          res.hand.forEach((card) => card.flip());
+        }
+        res.hand = [];
+        res.animation = false;
+      }, 800);
     }
+    return res;
   }
 
-  hasWon(res) {
+  hasWon() {
+    const res = cloneDeep(this);
     res.won = res.deck.every((card) => card.found);
+    return res;
   }
 
   setDeck(deck) {
