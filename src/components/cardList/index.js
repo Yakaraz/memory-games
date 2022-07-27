@@ -9,7 +9,15 @@ import CardView from "../card";
  */
 const CardListView = ({ deck, flipCard }) => {
   return (
-    <ImageList sx={{ width: "200px", height: "200px" }} cols={2}>
+    <ImageList
+      sx={{
+        width: "fit-content",
+        height: "fit-content",
+        overflow: "hidden",
+        margin: "auto",
+      }}
+      cols={4}
+    >
       {deck.map((card, index) => (
         <ImageListItem key={`${card.uuid}-${index}`}>
           <CardView {...card} flipCard={flipCard} />

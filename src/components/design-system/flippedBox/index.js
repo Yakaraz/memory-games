@@ -1,5 +1,10 @@
 import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
+import { keyframes, styled } from "@mui/material/styles";
+
+const flip = keyframes`
+  0% {}
+  20% {transform: scale(1.1);}
+  100% {transform: rotateY(180deg);}`;
 
 const FlippedBox = styled(Box)(({ theme, flipped }) => ({
   backgroundColor: "transparent",
@@ -17,7 +22,7 @@ const FlippedBox = styled(Box)(({ theme, flipped }) => ({
     transition: "transform 0.8s",
     transformStyle: "preserve-3d",
     //
-    transform: `${flipped ? "rotateY(180deg)" : ""}`,
+    animation: `${flipped ? `${flip} 0.8s forwards` : ""}`,
   },
   "& .flip-card-front, .flip-card-back": {
     position: "absolute",
