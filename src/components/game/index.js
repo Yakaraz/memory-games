@@ -6,7 +6,7 @@ import CardListView from "../cardList";
 import Card from "../../models/card.model";
 import { Game, GameState } from "../../models/game.model";
 
-import { Button, Backdrop } from "@mui/material";
+import { Button, Backdrop, Box } from "@mui/material";
 import { Container } from "@mui/system";
 import CountDown from "../countDown";
 
@@ -116,7 +116,7 @@ const GameView = () => {
   }, [game.started, game.progress]);
 
   return (
-    <div>
+    <Box>
       <Container sx={{ textAlign: "center", padding: "1em" }}>
         {game.started ? (
           <CountDown progress={game.progress} max={GAME_LENGTH} />
@@ -151,7 +151,7 @@ const GameView = () => {
         <h1>Bravo, tu as gagné !</h1>
       </Backdrop>
       <CardListView deck={game.deck} flipCard={flipCard} />
-    </div>
+    </Box>
   );
 };
 
