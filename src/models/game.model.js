@@ -6,6 +6,8 @@ export class Game {
     this.won = false;
     this.state = GameState.INITIAL;
     this.animating = false;
+    this.started = false;
+    this.progress = 0;
   }
 
   flipCard(uuid) {
@@ -26,6 +28,7 @@ export class Game {
     if (res.hand.length === 2) {
       if (res.hand[0].code === res.hand[1].code) {
         res.hand.forEach((card) => (card.found = true));
+        // this.hasWon();
       } else {
         res.hand[0].flip();
         res.hand[1].flip();
@@ -48,6 +51,7 @@ export class Game {
   hasWon() {
     const res = cloneDeep(this);
     res.won = res.deck.every((card) => card.found);
+    res.started = false;
     res.state = GameState.INITIAL;
     return res;
   }
@@ -57,6 +61,28 @@ export class Game {
     res.deck = deck;
     return res;
   }
+
+  start() {
+    const res = cloneDeep(this);
+    res.started = true;
+    res.progress = 0;
+    return res;
+  }
+
+  addASecond() {
+    const res = cloneDeep(this);
+    res.progress = this.progress + 1;
+    return res;
+  }
+
+  gameOver() {
+    const res = cloneDeep(this);
+    res.won = false;
+    res.progress = 0;
+    res.started = false;
+    res.state = GameState.LOSE;
+    return res;
+  }
 }
 
 export const GameState = Object.freeze({
@@ -64,4 +90,5 @@ export const GameState = Object.freeze({
   VALIDATE: 2,
   EMPTY: 3,
   WON: 4,
+  LOSE: 5,
 });

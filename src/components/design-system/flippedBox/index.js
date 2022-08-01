@@ -10,7 +10,6 @@ const FlippedBox = styled(Box)(({ theme, flipped }) => ({
   backgroundColor: "transparent",
   width: 90,
   height: 90,
-  border: "1px solid #f1f1f1",
   perspective: 1000,
   cursor: `${flipped ? "auto" : "pointer"}`,
 
@@ -25,6 +24,7 @@ const FlippedBox = styled(Box)(({ theme, flipped }) => ({
     animation: `${flipped ? `${flip} 0.8s forwards` : ""}`,
   },
   "& .flip-card-front, .flip-card-back": {
+    borderRadius: "5px",
     position: "absolute",
     width: "100%",
     height: "100%",
@@ -32,12 +32,13 @@ const FlippedBox = styled(Box)(({ theme, flipped }) => ({
     "& img": {
       width: 90,
     },
+    overflow: "hidden",
   },
   "& .flip-card-front": {
     transform: "rotateY(180deg)",
   },
   "& .flip-card-back": {
-    backgroundColor: "blueviolet",
+    backgroundColor: theme.palette.primary.transparent,
   },
 }));
 
