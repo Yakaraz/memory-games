@@ -28,7 +28,6 @@ export class Game {
     if (res.hand.length === 2) {
       if (res.hand[0].code === res.hand[1].code) {
         res.hand.forEach((card) => (card.found = true));
-        // this.hasWon();
       } else {
         res.hand[0].flip();
         res.hand[1].flip();
@@ -51,7 +50,6 @@ export class Game {
   hasWon() {
     const res = cloneDeep(this);
     res.won = res.deck.every((card) => card.found);
-    res.started = false;
     res.state = GameState.INITIAL;
     return res;
   }
