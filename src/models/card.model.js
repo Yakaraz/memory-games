@@ -5,7 +5,7 @@ class Card {
     this.uuid = uuidv4();
     this.code = image.uuid;
     this.url = image.url;
-    this.title = image.title;
+    this.title = image.name;
     this.flipped = false;
     this.found = false;
   }

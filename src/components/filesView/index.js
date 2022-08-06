@@ -7,24 +7,24 @@ import {
   Grid,
   Button,
 } from "@mui/material";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../db";
 
-const FilesView = () => {
-  const [files, setFiles] = useState([]);
-
+const FilesView = ({ files, setFiles }) => {
   useEffect(() => {
     const fetchData = async () => {
       const images = await db.images.toArray();
-      setFiles(
-        images.map((image) => ({
-          uuid: image.uuid,
-          name: image.file.name,
-          url: URL.createObjectURL(image.file),
-        }))
-      );
+      if (images && images.length > 0) {
+        setFiles(
+          images.map((image) => ({
+            uuid: image.uuid,
+            name: image.file.name,
+            url: URL.createObjectURL(image.file),
+          }))
+        );
+      }
     };
     fetchData();
   }, []);

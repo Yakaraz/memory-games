@@ -1,5 +1,5 @@
 import { cloneDeep } from "lodash";
-export class Game {
+export class GameModel {
   constructor() {
     this.deck = [];
     this.hand = [];
