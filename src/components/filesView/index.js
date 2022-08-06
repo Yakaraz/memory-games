@@ -13,12 +13,19 @@ const FilesView = () => {
     await db.images.delete(id);
     setImages((images) => images.filter((image) => image.uuid !== id));
   };
+  const deleteAllImages = async () => {
+    await db.images.clear();
+    setImages([]);
+  };
 
   return (
     <Container>
       <Description />
       <ImagesInput />
-      <FilesViewer deleteImage={deleteImage} />
+      <FilesViewer
+        deleteImage={deleteImage}
+        deleteAllImages={deleteAllImages}
+      />
     </Container>
   );
 };

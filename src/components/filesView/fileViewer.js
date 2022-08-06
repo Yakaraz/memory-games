@@ -15,25 +15,48 @@ const Img = styled("img")({
   display: "block",
   maxWidth: "98%",
   maxHeight: "98%",
+  boxShadow: "1px 1px 1px 0 rgba(0,39,86,0.5)",
   "&:hover": {
-    boxShadow: "0 0 0 1px white,0 0 0 3px #003986",
+    boxShadow: "2px 1px 2px 1px rgba(0,39,86,0.5)",
   },
 });
 
-const FilesViewer = ({ deleteImage }) => {
+const FilesViewer = ({ deleteImage, deleteAllImages }) => {
   const { images } = useContext(GameContext);
   return (
     <Container>
-      <Typography
-        fontFamily="Inter"
-        fontStyle="normal"
-        fontWeight="500"
-        fontSize="16px"
-        lineHeight="26px"
-        color="primary"
-      >
-        Vos fichiers
-      </Typography>
+      {images && images.length > 0 && (
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "end",
+          }}
+          my="1.5em"
+        >
+          <Typography
+            fontFamily="Inter"
+            fontStyle="normal"
+            fontWeight="500"
+            fontSize="16px"
+            lineHeight="26px"
+            color="primary"
+            marginRight="auto"
+          >
+            Vos fichiers
+          </Typography>
+          <Button
+            variant="contained"
+            color="delete"
+            sx={{
+              color: "white",
+            }}
+            onClick={() => deleteAllImages()}
+          >
+            Tout supprimer
+          </Button>
+        </Box>
+      )}
       <Stack
         direction="column"
         justifyContent="flex-start"
