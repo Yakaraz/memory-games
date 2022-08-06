@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { shuffle, concat, cloneDeep } from "lodash";
-import { db } from "../../db";
 // import PropTypes from "prop-types";
 import CardListView from "../cardList";
 import Card from "../../models/card.model";
@@ -9,13 +8,15 @@ import { GameState } from "../../models/game.model";
 import { Button, Backdrop, Box } from "@mui/material";
 import { Container } from "@mui/system";
 import CountDown from "../countDown";
+import { GameContext } from "../game";
 
 /**
  * Component GameView that show a board of cards
  */
-const GAME_LENGTH = 200;
+const GAME_LENGTH = 100;
 
-const GameBoard = ({ game, setGame, images }) => {
+const GameBoard = () => {
+  const { game, setGame, images } = useContext(GameContext);
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
   const validateHand = () => setGame((oldGame) => oldGame.validateHand());
   const emptyHand = () => setGame((oldGame) => oldGame.emptyHand());
@@ -29,15 +30,14 @@ const GameBoard = ({ game, setGame, images }) => {
 
   // On mount (once), we load the cards from the store
   useEffect(() => {
-    const loadImages = async () => {
+    if (images.length > 0) {
       const imagesClone = cloneDeep(images);
       const newImages = concat(images, imagesClone);
       const deck = shuffle(newImages.map((img) => new Card(img)));
       setDeck(deck);
-    };
-    loadImages().catch((e) => console.error(e));
-
-    return () => setDeck([]);
+    } else {
+      setDeck([]);
+    }
   }, [images]);
 
   useEffect(() => {
@@ -66,40 +66,46 @@ const GameBoard = ({ game, setGame, images }) => {
 
   return (
     <Box>
-      <Container sx={{ textAlign: "center", padding: "1em" }}>
-        {game.started ? (
-          <CountDown progress={game.progress} max={GAME_LENGTH} />
-        ) : (
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              startCountDown();
+      {images.length > 0 ? (
+        <>
+          <Container sx={{ textAlign: "center", padding: "1em" }}>
+            {game.started ? (
+              <CountDown progress={game.progress} max={GAME_LENGTH} />
+            ) : (
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  startCountDown();
+                }}
+                variant="contained"
+                size="large"
+              >
+                Start Game
+              </Button>
+            )}
+          </Container>
+          <Backdrop
+            open={game.won}
+            sx={{
+              zIndex: "1",
+              backgroundColor: `rgba(142, 12, 142, 0.6)`,
+              padding: "3em",
+              "& h1": {
+                backgroundColor: `rebeccapurple`,
+                color: "white",
+                padding: "1.25rem 2.5rem",
+                borderRadius: "1rem",
+                boxShadow: "inset 0 0 0 0.2em #f4f4f4",
+              },
             }}
-            variant="contained"
-            size="large"
           >
-            Start Game
-          </Button>
-        )}
-      </Container>
-      <Backdrop
-        open={game.won}
-        sx={{
-          zIndex: "1",
-          backgroundColor: `rgba(142, 12, 142, 0.6)`,
-          padding: "3em",
-          "& h1": {
-            backgroundColor: `rebeccapurple`,
-            color: "white",
-            padding: "1.25rem 2.5rem",
-            borderRadius: "1rem",
-            boxShadow: "inset 0 0 0 0.2em #f4f4f4",
-          },
-        }}
-      >
-        <h1>Bravo, tu as gagné !</h1>
-      </Backdrop>
-      <CardListView deck={game.deck} flipCard={flipCard} />
+            <h1>Bravo, tu as gagné !</h1>
+          </Backdrop>
+          <CardListView deck={game.deck} flipCard={flipCard} />
+        </>
+      ) : (
+        <p>aucune image</p>
+      )}
     </Box>
   );
 };
