@@ -20,7 +20,7 @@ const GameBoard = () => {
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
   const validateHand = () => setGame((oldGame) => oldGame.validateHand());
   const emptyHand = () => setGame((oldGame) => oldGame.emptyHand());
-
+  const unflip = () => setGame((oldGame) => oldGame.unflip());
   const hasWon = () => setGame((oldGame) => oldGame.hasWon());
   const setDeck = (deck) => setGame((oldGame) => oldGame.setDeck(deck));
 
@@ -29,8 +29,9 @@ const GameBoard = () => {
   const overtime = () => setGame((oldGame) => oldGame.gameOver());
 
   // On mount (once), we load the cards from the store
+
   useEffect(() => {
-    if (images.length > 0) {
+    if (images && images.length > 0) {
       const imagesClone = cloneDeep(images);
       const newImages = concat(images, imagesClone);
       const deck = shuffle(newImages.map((img) => new Card(img)));
@@ -42,18 +43,20 @@ const GameBoard = () => {
 
   useEffect(() => {
     let timeout;
-    if (game.state === GameState.VALIDATE) {
-      timeout = setTimeout(() => {
-        validateHand();
-      }, 800);
+    if ([GameState.VALIDATE_LEFT, GameState.VALIDATE_RIGHT].includes(game.state)) {
+      validateHand();
     } else if (game.state === GameState.EMPTY) {
       emptyHand();
+    } else if (game.state === GameState.UNFLIP) {
+      timeout = setTimeout(() => {
+        unflip();
+      }, 1000);
     } else if (game.state === GameState.WON) {
       hasWon();
     }
 
-    return () => window.clearTimeout(timeout);
-  }, [game]);
+    return () => timeout && window.clearTimeout(timeout)
+  }, [game.state]);
   ////////////////////:
   const oneSecond = () => setGame((oldGame) => oldGame.addASecond());
 
@@ -101,7 +104,7 @@ const GameBoard = () => {
           >
             <h1>Bravo, tu as gagné !</h1>
           </Backdrop>
-          <CardListView deck={game.deck} flipCard={flipCard} />
+          <CardListView deck={game.deck} flipCard={!game.animating ? flipCard : () => {}}/>
         </>
       ) : (
         <p>aucune image</p>

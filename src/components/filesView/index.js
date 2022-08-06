@@ -18,7 +18,7 @@ const FilesView = () => {
     <Container>
       <Description />
       <ImagesInput />
-      <FilesViewer clearImages={clearImages} />
+      <FilesViewer deleteImage={deleteImage} />
     </Container>
   );
 };

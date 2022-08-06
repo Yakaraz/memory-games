@@ -12,14 +12,28 @@ export class GameModel {
 
   flipCard(uuid) {
     const res = cloneDeep(this);
-    if (this.hand.length < 2) {
+    if (res.hand.length < 2) {
       const card = res.deck.find((card) => card.uuid === uuid);
       if (!card.flipped) {
         card.flip();
         res.hand.push(card);
       }
     }
-    res.state = GameState.VALIDATE;
+    if (res.hand.length === 1) {
+      res.state = GameState.VALIDATE_LEFT;
+    } else {
+      res.state = GameState.VALIDATE_RIGHT;
+    }
+
+    return res;
+  }
+
+
+  unflip() {
+    const res = cloneDeep(this);
+    res.hand[0].flip();
+    res.hand[1].flip();
+    res.state = GameState.EMPTY;
     return res;
   }
 
@@ -28,21 +42,20 @@ export class GameModel {
     if (res.hand.length === 2) {
       if (res.hand[0].code === res.hand[1].code) {
         res.hand.forEach((card) => (card.found = true));
+        res.state = GameState.EMPTY;
       } else {
-        res.hand[0].flip();
-        res.hand[1].flip();
+        res.animating = true;
+        res.state = GameState.UNFLIP;
       }
     }
-    res.state = GameState.EMPTY;
+
     return res;
   }
 
   emptyHand() {
     const res = cloneDeep(this);
-    if (res.hand.length === 2 && !res.animating) {
-      res.hand = [];
-      res.animation = false;
-    }
+    res.hand = [];
+    res.animating = false;
     res.state = GameState.WON;
     return res;
   }
@@ -85,8 +98,10 @@ export class GameModel {
 
 export const GameState = Object.freeze({
   INITIAL: 1,
-  VALIDATE: 2,
-  EMPTY: 3,
-  WON: 4,
-  LOSE: 5,
+  VALIDATE_LEFT: 2,
+  VALIDATE_RIGHT: 3,
+  UNFLIP: 4,
+  EMPTY: 5,
+  WON: 6,
+  LOSE: 7,
 });
