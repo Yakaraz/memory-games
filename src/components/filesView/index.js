@@ -7,9 +7,10 @@ import {
   Grid,
   Button,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { db } from "../../db";
+import React, { useEffect, useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 import { v4 as uuidv4 } from "uuid";
+import { db } from "../../db";
 
 const FilesView = () => {
   const [files, setFiles] = useState([]);
@@ -35,14 +36,14 @@ const FilesView = () => {
 
   return (
     <Container>
-      <StepOneDescription />
+      <Description />
       <StepOneDnD files={files} setFiles={setFiles} />
       <FilesViewer files={files} deleteImage={deleteImage} />
     </Container>
   );
 };
 
-const StepOneDescription = () => (
+const Description = () => (
   <Container ml="1em" sx={{ marginBottom: "1em" }}>
     <Typography
       component="h3"
@@ -138,90 +139,97 @@ const StepOneDnD = ({ setFiles }) => {
       ]);
     }
   };
+  const onDrop = useCallback((acceptedFiles) => {
+    uploadFiles(acceptedFiles);
+  }, []);
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
     <>
-      <input
-        accept="image/*"
-        style={{ display: "none" }}
-        id="raised-button-file"
-        multiple
-        type="file"
-        onChange={(e) => uploadFiles(e.target.files)}
-      />
       <label htmlFor="raised-button-file">
-        <Container
-          sx={{
-            height: "150px",
-            backgroundColor: "rgba(95, 153, 231, 0.05)",
-            border: "1.5px dashed #5F99E7",
-            borderRadius: "3px",
-            display: "grid",
-            justifyItems: "center",
-            alignContent: "center",
-            marginLeft: "1em",
-            cursor: "pointer",
-          }}
-        >
-          <Typography
+        <div {...getRootProps()}>
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="raised-button-file"
+            multiple
+            type="file"
+            onChange={(e) => uploadFiles(e.target.files)}
+            {...getInputProps()}
+          />
+          <Container
             sx={{
-              height: "25px",
-              width: "25px",
-              backgroundColor: "rgba(95, 153, 231, 0.2)",
-              borderRadius: "50%",
+              height: "150px",
+              backgroundColor: "rgba(95, 153, 231, 0.05)",
+              border: "1.5px dashed #5F99E7",
+              borderRadius: "3px",
               display: "grid",
-              alignItems: "center",
-              justifyContent: "center",
+              justifyItems: "center",
+              alignContent: "center",
+              marginLeft: "1em",
+              cursor: "pointer",
             }}
           >
-            <img src="./img/upload.png" alt="upload" />
-          </Typography>
-          <Typography
-            fontFamily="Inter"
-            fontStyle="normal"
-            fontSize="14px"
-            fontWeight="500"
-            lineHeight="17px"
-            mt="1em"
-            sx={{ maxWidth: "30ch" }}
-            textAlign="center"
-          >
-            Faites{" "}
             <Typography
-              component="span"
+              sx={{
+                height: "25px",
+                width: "25px",
+                backgroundColor: "rgba(95, 153, 231, 0.2)",
+                borderRadius: "50%",
+                display: "grid",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img src="./img/upload.png" alt="upload" />
+            </Typography>
+            <Typography
+              fontFamily="Inter"
               fontStyle="normal"
               fontSize="14px"
               fontWeight="500"
               lineHeight="17px"
-              color="secondary"
+              mt="1em"
+              sx={{ maxWidth: "30ch" }}
+              textAlign="center"
             >
-              glissez vos photos{" "}
+              Faites{" "}
+              <Typography
+                component="span"
+                fontStyle="normal"
+                fontSize="14px"
+                fontWeight="500"
+                lineHeight="17px"
+                color="secondary"
+              >
+                glissez vos photos{" "}
+              </Typography>
+              depuis votre appareils ou{" "}
+              <Typography
+                component="span"
+                fontStyle="normal"
+                fontSize="14px"
+                fontWeight="500"
+                lineHeight="17px"
+                color="secondary"
+              >
+                chargez-les
+              </Typography>
+              .
             </Typography>
-            depuis votre appareils ou{" "}
             <Typography
-              component="span"
+              fontFamily="Inter"
               fontStyle="normal"
-              fontSize="14px"
-              fontWeight="500"
-              lineHeight="17px"
-              color="secondary"
+              fontSize="10px"
+              fontWeight="400"
+              lineHeight="12px"
+              color="#9AA3B0"
+              mt="1em"
             >
-              chargez-les
+              Choisissez entre 2 et 26 photos.
             </Typography>
-            .
-          </Typography>
-          <Typography
-            fontFamily="Inter"
-            fontStyle="normal"
-            fontSize="10px"
-            fontWeight="400"
-            lineHeight="12px"
-            color="#9AA3B0"
-            mt="1em"
-          >
-            Choisissez entre 2 et 26 photos.
-          </Typography>
-        </Container>
+          </Container>
+        </div>
       </label>
     </>
   );
