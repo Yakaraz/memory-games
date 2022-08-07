@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { shuffle, concat, cloneDeep } from "lodash";
+import { shuffle, concat, cloneDeep, take } from "lodash";
 // import PropTypes from "prop-types";
 import CardListView from "../cardList";
 import Card from "../../models/card.model";
@@ -16,7 +16,7 @@ import { GameContext } from "../game";
 const GAME_LENGTH = 100;
 
 const GameBoard = () => {
-  const { game, setGame, images } = useContext(GameContext);
+  const { game, setGame, images, boardSize } = useContext(GameContext);
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
   const validateHand = () => setGame((oldGame) => oldGame.validateHand());
   const emptyHand = () => setGame((oldGame) => oldGame.emptyHand());
@@ -25,21 +25,18 @@ const GameBoard = () => {
   const setDeck = (deck) => setGame((oldGame) => oldGame.setDeck(deck));
 
   const startCountDown = () => setGame((oldGame) => oldGame.start());
-
+  // TODO
+  // const startCountUp = () => setGame((oldGame) => oldGame.start());
+  // const startGame= ()
   const overtime = () => setGame((oldGame) => oldGame.gameOver());
-
-  // On mount (once), we load the cards from the store
-
   useEffect(() => {
-    if (images && images.length > 0) {
-      const imagesClone = cloneDeep(images);
-      const newImages = concat(images, imagesClone);
-      const deck = shuffle(newImages.map((img) => new Card(img)));
-      setDeck(deck);
-    } else {
-      setDeck([]);
-    }
-  }, [images]);
+    let imagesClone = cloneDeep(images);
+    imagesClone = shuffle(imagesClone);
+    const pool = take(imagesClone, boardSize / 2);
+    const newImages = concat(pool, pool);
+    const deck = shuffle(newImages.map((img) => new Card(img)));
+    setDeck(deck);
+  }, [boardSize]);
 
   useEffect(() => {
     let timeout;

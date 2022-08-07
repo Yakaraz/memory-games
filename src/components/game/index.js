@@ -11,7 +11,7 @@ export const GameContext = React.createContext();
 const Game = () => {
   const [game, setGame] = useState(new GameModel());
   const [images, setImages] = useState([]);
-  const [boardSize, setBoardSize] = useState(6);
+  const [boardSize, setBoardSize] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
