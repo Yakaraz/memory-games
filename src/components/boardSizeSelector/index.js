@@ -5,11 +5,11 @@ import SizeSelector from "./sizeSelector";
 import { GameContext } from "../../components/game";
 
 const BoardSizeSelector = () => {
-  const context = useContext(GameContext);
+  const { images } = useContext(GameContext);
   return (
     <Container>
       <Description />
-      {context.images.length >= 3 && <SizeSelector context={context} />}
+      {images.length >= 3 && <SizeSelector />}
     </Container>
   );
 };

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { GameContext } from "../../components/game";
 import { Container, ToggleButtonGroup, ToggleButton } from "@mui/material";
 
-const SizeSelector = ({ boardSize, setBoardSize, images }) => {
+const SizeSelector = () => {
+  const { boardSize, setBoardSize, images } = useContext(GameContext);
   const setSize = (selectedSize) =>
     selectedSize &&
     selectedSize <= images.length * 2 &&
@@ -12,10 +14,7 @@ const SizeSelector = ({ boardSize, setBoardSize, images }) => {
         color="primary"
         value={`${boardSize}`}
         exclusive
-        onChange={(_, selectedSize) => {
-          console.warn(typeof +selectedSize + " " + selectedSize);
-          setSize(+selectedSize);
-        }}
+        onChange={(_, selectedSize) => setSize(+selectedSize)}
       >
         <ToggleButton value="6">6 images</ToggleButton>
         <ToggleButton value="12" disabled={images.length < 6}>
