@@ -82,6 +82,7 @@ const GameBoard = () => {
             }}
             variant="contained"
             size="large"
+            disabled={images.length < 3}
           >
             Start Game
           </Button>

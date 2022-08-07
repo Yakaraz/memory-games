@@ -1,12 +1,7 @@
-import React, { useState } from "react";
-import {
-  Container,
-  ToggleButtonGroup,
-  ToggleButton,
-  Typography,
-} from "@mui/material";
+import React from "react";
+import { Container, Typography } from "@mui/material";
 
-const StepTwoDescription = () => (
+const Description = () => (
   <Container ml="1em" sx={{ marginBottom: "1em" }}>
     <Typography
       component="h3"
@@ -64,30 +59,5 @@ const StepTwoDescription = () => (
     </Typography>
   </Container>
 );
-const SizeSelector = () => {
-  const [boardSize, setBoardSize] = useState("3");
-  return (
-    <Container ml="1em" sx={{ width: "100%", textAlign: "center" }}>
-      <ToggleButtonGroup
-        color="primary"
-        value={boardSize}
-        exclusive
-        onChange={(e, newSize) => setBoardSize(newSize)}
-      >
-        <ToggleButton value="3">6 images</ToggleButton>
-        <ToggleButton value="6">12 images</ToggleButton>
-        <ToggleButton value="8">16 images</ToggleButton>
-        <ToggleButton value="10">20 images</ToggleButton>
-      </ToggleButtonGroup>
-    </Container>
-  );
-};
 
-const StepTwo = () => (
-  <Container>
-    <StepTwoDescription />
-    <SizeSelector />
-  </Container>
-);
-
-export default StepTwo;
+export default Description;

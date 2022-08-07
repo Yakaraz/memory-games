@@ -2,11 +2,13 @@
 
 ## TODO
 
-- afficher start game lorsque logique
 - lier images disponible et taille du board
-- faire des affichage victoire / défaite
 - Time attack plutot que countdown
+- faire des affichage victoire (/ défaite)
+- alimenter une table de score
 
 # Objectifs actuels
 
-Lier Timer et jeux grace au context
+StartGame ( images.length, boardSizeChosen(, countUP||DOWN))
+setDeck
+startTimer

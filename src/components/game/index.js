@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "@mui/system";
 import FilesView from "../filesView";
-import StepTwo from "../stepTwo";
+import BoardSizeSelector from "../boardSizeSelector";
 import { GameModel } from "../../models/game.model";
 import GameBoard from "../gameBoard";
 import { db } from "../../db";
@@ -11,6 +11,7 @@ export const GameContext = React.createContext();
 const Game = () => {
   const [game, setGame] = useState(new GameModel());
   const [images, setImages] = useState([]);
+  const [boardSize, setBoardSize] = useState(6);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,12 +30,14 @@ const Game = () => {
   }, []);
 
   return (
-    <GameContext.Provider value={{ game, setGame, images, setImages }}>
+    <GameContext.Provider
+      value={{ game, setGame, images, setImages, boardSize, setBoardSize }}
+    >
       <Container>
         {!game.started && (
           <>
             <FilesView />
-            <StepTwo />
+            <BoardSizeSelector />
           </>
         )}
         <GameBoard />
