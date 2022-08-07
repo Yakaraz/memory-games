@@ -8,6 +8,7 @@ export class GameModel {
     this.animating = false;
     this.started = false;
     this.progress = 0;
+    this.mode = GameMode.COUNT_UP;
   }
 
   flipCard(uuid) {
@@ -27,7 +28,6 @@ export class GameModel {
 
     return res;
   }
-
 
   unflip() {
     const res = cloneDeep(this);
@@ -73,7 +73,7 @@ export class GameModel {
     return res;
   }
 
-  start() {
+  startCount() {
     const res = cloneDeep(this);
     res.started = true;
     res.progress = 0;
@@ -95,6 +95,11 @@ export class GameModel {
     return res;
   }
 }
+
+export const GameMode = Object.freeze({
+  COUNT_UP: 1,
+  COUNT_DOWN: 2,
+});
 
 export const GameState = Object.freeze({
   INITIAL: 1,

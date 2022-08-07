@@ -3,12 +3,13 @@ import { shuffle, concat, cloneDeep, take } from "lodash";
 // import PropTypes from "prop-types";
 import CardListView from "../cardList";
 import Card from "../../models/card.model";
-import { GameState } from "../../models/game.model";
+import { GameState, GameMode } from "../../models/game.model";
 
 import { Button, Backdrop, Box } from "@mui/material";
 import { Container } from "@mui/system";
-import CountDown from "../countDown";
 import { GameContext } from "../game";
+import CountDown from "../countDown";
+import CountUp from "../countUp";
 
 /**
  * Component GameView that show a board of cards
@@ -24,10 +25,8 @@ const GameBoard = () => {
   const hasWon = () => setGame((oldGame) => oldGame.hasWon());
   const setDeck = (deck) => setGame((oldGame) => oldGame.setDeck(deck));
 
-  const startCountDown = () => setGame((oldGame) => oldGame.start());
-  // TODO
-  // const startCountUp = () => setGame((oldGame) => oldGame.start());
-  // const startGame= ()
+  const startCount = () => setGame((oldGame) => oldGame.startCount());
+
   const overtime = () => setGame((oldGame) => oldGame.gameOver());
   useEffect(() => {
     let imagesClone = cloneDeep(images);
@@ -60,26 +59,39 @@ const GameBoard = () => {
   const oneSecond = () => setGame((oldGame) => oldGame.addASecond());
 
   useEffect(() => {
-    game.started &&
-      game.progress <= GAME_LENGTH &&
-      setTimeout(() => oneSecond(), 1000);
-    game.progress > GAME_LENGTH && overtime();
+    if (game.started) {
+      if (game.mode === GameMode.COUNT_DOWN) {
+        game.progress < GAME_LENGTH && setTimeout(() => oneSecond(), 1000);
+        game.progress >= GAME_LENGTH && overtime();
+      } else {
+        setTimeout(() => oneSecond(), 1000);
+      }
+    }
   }, [game.started, game.progress]);
+
+  const timerSelect = (mode) => {
+    switch (mode) {
+      case GameMode.COUNT_UP:
+        return <CountUp />;
+      case GameMode.COUNT_DOWN:
+        return <CountDown />;
+    }
+  };
 
   return (
     <Box>
       <Container sx={{ textAlign: "center", padding: "1em" }}>
         {game.started ? (
-          <CountDown progress={game.progress} max={GAME_LENGTH} />
+          timerSelect(game.mode)
         ) : (
           <Button
             onClick={(e) => {
               e.preventDefault();
-              startCountDown();
+              boardSize > 0 && startCount();
             }}
             variant="contained"
             size="large"
-            disabled={images.length < 3}
+            disabled={boardSize === 0 || images.length < 3}
           >
             Start Game
           </Button>

@@ -41,7 +41,7 @@ const Rules = () => (
       </Typography>
       le plus rapidement possible. À chaque tour, retournez 2 cartes. Si elles
       sont identiques, elles restent affichées. Si les deux cartes sont
-      différentes, elles dispairaissent.
+      différentes, elles disparaissent.
       <br />À vous de retrouver les paires.
     </Typography>
   </Container>
