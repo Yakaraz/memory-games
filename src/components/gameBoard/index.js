@@ -6,7 +6,7 @@ import Card from "../../models/card.model";
 import { GameState, GameMode } from "../../models/game.model";
 import { v4 as uuidv4 } from "uuid";
 
-import { Button, Backdrop, Box } from "@mui/material";
+import { Button, Backdrop, Box, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { GameContext } from "../game";
 import CountDown from "../countDown";
@@ -29,6 +29,8 @@ const GameBoard = () => {
   const setDeck = (deck) => setGame((oldGame) => oldGame.setDeck(deck));
   const startCount = () => setGame((oldGame) => oldGame.startCount());
   const oneSecond = () => setGame((oldGame) => oldGame.addASecond());
+
+  const resetGame = () => setGame((oldGame) => oldGame.resetGame());
 
   const overtime = () => setGame((oldGame) => oldGame.gameOver());
   useEffect(() => {
@@ -85,12 +87,29 @@ const GameBoard = () => {
     }
   }, [game.started, game.progress]);
 
-  const timerSelect = (mode) => {
-    switch (mode) {
-      case GameMode.COUNT_UP:
-        return <CountUp />;
-      case GameMode.COUNT_DOWN:
-        return <CountDown />;
+  const timerSelect = (mode, won) => {
+    if (!won) {
+      switch (mode) {
+        case GameMode.COUNT_UP:
+          return <CountUp />;
+        case GameMode.COUNT_DOWN:
+          return <CountDown />;
+      }
+    } else {
+      return (
+        <Typography
+          component="h3"
+          color="primary"
+          fontFamily="Inter"
+          fontStyle="normal"
+          fontSize="24px"
+          fontWeight="700"
+          lineHeight="29px"
+          mb="0.5em"
+        >
+          Bravo !
+        </Typography>
+      );
     }
   };
 
@@ -98,7 +117,7 @@ const GameBoard = () => {
     <Box>
       <Container sx={{ textAlign: "center", padding: "1em" }}>
         {game.started ? (
-          timerSelect(game.mode)
+          timerSelect(game.mode, game.won)
         ) : (
           <Button
             onClick={(e) => {
@@ -113,28 +132,22 @@ const GameBoard = () => {
           </Button>
         )}
       </Container>
-      <Backdrop
-        open={game.won}
-        sx={{
-          zIndex: "1",
-          backgroundColor: `rgba(3,3,3, 0.6)`,
-          padding: "3em",
-          "& h1": {
-            backgroundColor: `rebeccapurple`,
-            color: "white",
-            padding: "1.25rem 2.5rem",
-            borderRadius: "1rem",
-            boxShadow: "inset 0 0 0 0.2em #f4f4f4",
-          },
-        }}
-      >
-        <h1>Bravo, tu as gagné !</h1>
-      </Backdrop>
       {game.started && (
-        <CardListView
-          deck={game.deck}
-          flipCard={!game.animating ? flipCard : () => {}}
-        />
+        <>
+          <CardListView
+            deck={game.deck}
+            flipCard={!game.animating ? flipCard : () => {}}
+          />
+          <Container sx={{ textAlign: "center", marginTop: "2em" }}>
+            <Button
+              onClick={() => resetGame()}
+              variant="contained"
+              size="large"
+            >
+              Retour
+            </Button>
+          </Container>
+        </>
       )}
     </Box>
   );

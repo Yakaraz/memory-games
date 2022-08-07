@@ -67,6 +67,14 @@ export class GameModel {
     return res;
   }
 
+  resetGame() {
+    const res = cloneDeep(this);
+    res.started = false;
+    res.won = false;
+    res.progress = 0;
+    return res;
+  }
+
   setDeck(deck) {
     const res = cloneDeep(this);
     res.deck = deck;

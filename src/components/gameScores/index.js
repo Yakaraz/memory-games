@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Box, Container, Typography, Stack, Grid } from "@mui/material";
+import { sortBy, reverse } from "lodash";
 import { GameContext } from "../game";
 
 const GameScores = () => {
@@ -16,7 +17,6 @@ const GameScores = () => {
         fontWeight="500"
         lineHeight="29px"
         mt="2em"
-        mb="0.5em"
       >
         Mes Scores
       </Typography>
@@ -25,11 +25,12 @@ const GameScores = () => {
           direction="column"
           justifyContent="flex-start"
           alignItems="stretch"
-          spacing={0.5}
+          spacing={1}
+          my="1em"
         >
-          {scores.map((score) => (
-            <Box key={score.id} my="0.5em">
-              <Grid container spacing={2}>
+          {reverse(sortBy(scores, "date")).map((score) => (
+            <Box key={score.id}>
+              <Grid container>
                 <Grid item>
                   <Typography
                     fontFamily="Inter"
