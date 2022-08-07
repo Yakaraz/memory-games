@@ -4,12 +4,14 @@ import { shuffle, concat, cloneDeep, take } from "lodash";
 import CardListView from "../cardList";
 import Card from "../../models/card.model";
 import { GameState, GameMode } from "../../models/game.model";
+import { v4 as uuidv4 } from "uuid";
 
 import { Button, Backdrop, Box } from "@mui/material";
 import { Container } from "@mui/system";
 import { GameContext } from "../game";
 import CountDown from "../countDown";
 import CountUp from "../countUp";
+import { db } from "../../db";
 
 /**
  * Component GameView that show a board of cards
@@ -17,15 +19,16 @@ import CountUp from "../countUp";
 const GAME_LENGTH = 100;
 
 const GameBoard = () => {
-  const { game, setGame, images, boardSize } = useContext(GameContext);
+  const { game, setGame, images, boardSize, scores, setScores } =
+    useContext(GameContext);
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
   const validateHand = () => setGame((oldGame) => oldGame.validateHand());
   const emptyHand = () => setGame((oldGame) => oldGame.emptyHand());
   const unflip = () => setGame((oldGame) => oldGame.unflip());
   const hasWon = () => setGame((oldGame) => oldGame.hasWon());
   const setDeck = (deck) => setGame((oldGame) => oldGame.setDeck(deck));
-
   const startCount = () => setGame((oldGame) => oldGame.startCount());
+  const oneSecond = () => setGame((oldGame) => oldGame.addASecond());
 
   const overtime = () => setGame((oldGame) => oldGame.gameOver());
   useEffect(() => {
@@ -55,8 +58,21 @@ const GameBoard = () => {
 
     return () => timeout && window.clearTimeout(timeout);
   }, [game.state]);
-  ////////////////////:
-  const oneSecond = () => setGame((oldGame) => oldGame.addASecond());
+
+  useEffect(() => {
+    const addScore = async () => {
+      let score = {
+        id: uuidv4(),
+        date: new Date(),
+        value: game.progress,
+        boardSize: boardSize,
+      };
+      await db.scores.add(score);
+      const newScores = await db.scores.toArray();
+      setScores(newScores);
+    };
+    game.won && addScore();
+  }, [game.won]);
 
   useEffect(() => {
     if (game.started) {
