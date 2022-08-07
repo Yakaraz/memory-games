@@ -43,7 +43,9 @@ const GameBoard = () => {
 
   useEffect(() => {
     let timeout;
-    if ([GameState.VALIDATE_LEFT, GameState.VALIDATE_RIGHT].includes(game.state)) {
+    if (
+      [GameState.VALIDATE_LEFT, GameState.VALIDATE_RIGHT].includes(game.state)
+    ) {
       validateHand();
     } else if (game.state === GameState.EMPTY) {
       emptyHand();
@@ -55,7 +57,7 @@ const GameBoard = () => {
       hasWon();
     }
 
-    return () => timeout && window.clearTimeout(timeout)
+    return () => timeout && window.clearTimeout(timeout);
   }, [game.state]);
   ////////////////////:
   const oneSecond = () => setGame((oldGame) => oldGame.addASecond());
@@ -69,45 +71,44 @@ const GameBoard = () => {
 
   return (
     <Box>
-      {images.length > 0 ? (
-        <>
-          <Container sx={{ textAlign: "center", padding: "1em" }}>
-            {game.started ? (
-              <CountDown progress={game.progress} max={GAME_LENGTH} />
-            ) : (
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  startCountDown();
-                }}
-                variant="contained"
-                size="large"
-              >
-                Start Game
-              </Button>
-            )}
-          </Container>
-          <Backdrop
-            open={game.won}
-            sx={{
-              zIndex: "1",
-              backgroundColor: `rgba(142, 12, 142, 0.6)`,
-              padding: "3em",
-              "& h1": {
-                backgroundColor: `rebeccapurple`,
-                color: "white",
-                padding: "1.25rem 2.5rem",
-                borderRadius: "1rem",
-                boxShadow: "inset 0 0 0 0.2em #f4f4f4",
-              },
+      <Container sx={{ textAlign: "center", padding: "1em" }}>
+        {game.started ? (
+          <CountDown progress={game.progress} max={GAME_LENGTH} />
+        ) : (
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              startCountDown();
             }}
+            variant="contained"
+            size="large"
           >
-            <h1>Bravo, tu as gagné !</h1>
-          </Backdrop>
-          <CardListView deck={game.deck} flipCard={!game.animating ? flipCard : () => {}}/>
-        </>
-      ) : (
-        <p>aucune image</p>
+            Start Game
+          </Button>
+        )}
+      </Container>
+      <Backdrop
+        open={game.won}
+        sx={{
+          zIndex: "1",
+          backgroundColor: `rgba(3,3,3, 0.6)`,
+          padding: "3em",
+          "& h1": {
+            backgroundColor: `rebeccapurple`,
+            color: "white",
+            padding: "1.25rem 2.5rem",
+            borderRadius: "1rem",
+            boxShadow: "inset 0 0 0 0.2em #f4f4f4",
+          },
+        }}
+      >
+        <h1>Bravo, tu as gagné !</h1>
+      </Backdrop>
+      {game.started && (
+        <CardListView
+          deck={game.deck}
+          flipCard={!game.animating ? flipCard : () => {}}
+        />
       )}
     </Box>
   );

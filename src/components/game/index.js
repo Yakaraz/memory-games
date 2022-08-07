@@ -31,8 +31,12 @@ const Game = () => {
   return (
     <GameContext.Provider value={{ game, setGame, images, setImages }}>
       <Container>
-        <FilesView />
-        <StepTwo />
+        {!game.started && (
+          <>
+            <FilesView />
+            <StepTwo />
+          </>
+        )}
         <GameBoard />
       </Container>
     </GameContext.Provider>
