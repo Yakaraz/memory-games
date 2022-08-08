@@ -44,7 +44,8 @@ const GameScores = () => {
                       month: "long",
                       day: "numeric",
                     })}{" "}
-                    à {score.date.getHours()}h{score.date.getMinutes()}
+                    à {score.date.getHours()}h
+                    {score.date.getMinutes().toString().padStart(2, "0")}
                   </Typography>
                 </Grid>
                 <Grid item mx="auto">
@@ -55,7 +56,8 @@ const GameScores = () => {
                     fontSize="24px"
                     lineHeight="29px"
                   >
-                    {Math.floor(score.value / 60)}m{score.value % 60}s
+                    {Math.floor(score.value / 60)}m{" "}
+                    {(score.value % 60).toString().padStart(2, "0")}s
                   </Typography>
                 </Grid>
                 <Grid item>
