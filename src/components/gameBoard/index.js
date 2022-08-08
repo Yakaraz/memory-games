@@ -19,7 +19,7 @@ import { db } from "../../db";
 const GAME_LENGTH = 100;
 
 const GameBoard = () => {
-  const { game, setGame, images, boardSize, scores, setScores } =
+  const { game, setGame, images, boardSize, setBoardSize, setScores } =
     useContext(GameContext);
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
   const validateHand = () => setGame((oldGame) => oldGame.validateHand());
@@ -30,7 +30,10 @@ const GameBoard = () => {
   const startCount = () => setGame((oldGame) => oldGame.startCount());
   const oneSecond = () => setGame((oldGame) => oldGame.addASecond());
 
-  const resetGame = () => setGame((oldGame) => oldGame.resetGame());
+  const resetGame = () => {
+    setBoardSize(0);
+    setGame((oldGame) => oldGame.resetGame());
+  };
 
   const overtime = () => setGame((oldGame) => oldGame.gameOver());
   useEffect(() => {
@@ -144,7 +147,7 @@ const GameBoard = () => {
               variant="contained"
               size="large"
             >
-              Retour
+              {game.won ? "Retour" : "Arrêter"}
             </Button>
           </Container>
         </>
