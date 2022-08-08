@@ -10,6 +10,7 @@ const Title = () => (
       position: "absolute",
       zIndex: "-1",
       top: "-20em",
+      left: "0",
     }}
   >
     <Typography

@@ -1,13 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Stack,
-  Box,
-  Grid,
-  Button,
-  Typography,
-  Container,
-  styled,
-} from "@mui/material";
+import { Stack, Box, Grid, Button, Typography, styled } from "@mui/material";
 import { GameContext } from "../game";
 
 const Img = styled("img")({
@@ -24,7 +16,7 @@ const Img = styled("img")({
 const FilesViewer = ({ deleteImage, deleteAllImages }) => {
   const { images } = useContext(GameContext);
   return (
-    <Container>
+    <Box>
       {images && images.length > 0 && (
         <Box
           sx={{
@@ -114,7 +106,7 @@ const FilesViewer = ({ deleteImage, deleteAllImages }) => {
           </Box>
         ))}
       </Stack>
-    </Container>
+    </Box>
   );
 };
 

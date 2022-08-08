@@ -6,7 +6,7 @@ import Card from "../../models/card.model";
 import { GameState, GameMode } from "../../models/game.model";
 import { v4 as uuidv4 } from "uuid";
 
-import { Button, Backdrop, Box, Paper, Typography } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { GameContext } from "../game";
 import CountDown from "../countDown";
@@ -97,6 +97,8 @@ const GameBoard = () => {
           return <CountUp />;
         case GameMode.COUNT_DOWN:
           return <CountDown />;
+        default:
+          return <CountUp />;
       }
     } else {
       return (
