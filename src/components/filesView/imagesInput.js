@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { Container, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../db";
@@ -10,7 +10,10 @@ const ImagesInput = () => {
 
   const uploadFiles = async (images) => {
     if (images.length) {
-      const newImages = [...images].map((file) => ({
+      const filteredImages = images.filter((image) =>
+        ["image/jpeg", "image/png"].includes(image.type)
+      );
+      const newImages = [...filteredImages].map((file) => ({
         file,
         uuid: uuidv4(),
       }));
@@ -39,7 +42,7 @@ const ImagesInput = () => {
       <label htmlFor="raised-button-file">
         <div {...getRootProps()}>
           <input
-            accept="image/*"
+            accept="image/jpg,image/png,image/jpeg"
             style={{ display: "none" }}
             id="raised-button-file"
             multiple
@@ -47,7 +50,7 @@ const ImagesInput = () => {
             onChange={(e) => uploadFiles(e.target.files)}
             {...getInputProps()}
           />
-          <Container
+          <Box
             sx={{
               height: "150px",
               backgroundColor: "rgba(95, 153, 231, 0.05)",
@@ -56,7 +59,6 @@ const ImagesInput = () => {
               display: "grid",
               justifyItems: "center",
               alignContent: "center",
-              marginLeft: "1em",
               cursor: "pointer",
             }}
           >
@@ -118,7 +120,7 @@ const ImagesInput = () => {
             >
               Choisissez entre 2 et 26 photos.
             </Typography>
-          </Container>
+          </Box>
         </div>
       </label>
     </>

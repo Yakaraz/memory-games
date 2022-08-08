@@ -4,12 +4,10 @@ import Title from "../Title";
 import Rules from "../Rules";
 
 const Header = () => (
-  <>
-    <Container sx={{ position: "relative" }}>
-      <Title />
-      <Rules />
-    </Container>
-  </>
+  <Container sx={{ position: "relative" }}>
+    <Title />
+    <Rules />
+  </Container>
 );
 
 export default Header;

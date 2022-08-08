@@ -69,9 +69,13 @@ export class GameModel {
 
   resetGame() {
     const res = cloneDeep(this);
-    res.started = false;
+    res.deck = [];
+    res.hand = [];
     res.won = false;
     res.progress = 0;
+    res.started = false;
+    res.state = GameState.INITIAL;
+    res.animating = false;
     return res;
   }
 

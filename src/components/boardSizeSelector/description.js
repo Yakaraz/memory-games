@@ -1,8 +1,8 @@
 import React from "react";
-import { Container, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const Description = () => (
-  <Container ml="1em" sx={{ marginBottom: "1em" }}>
+  <Box sx={{ marginBottom: "1em" }}>
     <Typography
       component="h3"
       color="primary"
@@ -57,7 +57,7 @@ const Description = () => (
         Par défaut, nous choisirons le nombre maximal d’images.
       </Typography>
     </Typography>
-  </Container>
+  </Box>
 );
 
 export default Description;

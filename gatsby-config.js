@@ -1,13 +1,20 @@
 module.exports = {
   siteMetadata: {
     title: `memory-games`,
-    siteUrl: `https://www.yourdomain.tld`,
+    siteUrl: `https://memory.paulsouchet.fr`,
   },
   plugins: [
     "gatsby-plugin-image",
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    {
+      resolve: "gatsby-plugin-manifest",
+      options: {
+        icon: "src/images/icon.png",
+      },
+    },
+
     {
       resolve: "gatsby-source-filesystem",
       options: {

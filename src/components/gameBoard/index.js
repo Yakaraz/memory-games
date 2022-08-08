@@ -6,7 +6,7 @@ import Card from "../../models/card.model";
 import { GameState, GameMode } from "../../models/game.model";
 import { v4 as uuidv4 } from "uuid";
 
-import { Button, Backdrop, Box, Paper, Typography } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { GameContext } from "../game";
 import CountDown from "../countDown";
@@ -19,7 +19,7 @@ import { db } from "../../db";
 const GAME_LENGTH = 100;
 
 const GameBoard = () => {
-  const { game, setGame, images, boardSize, scores, setScores } =
+  const { game, setGame, images, boardSize, setBoardSize, setScores } =
     useContext(GameContext);
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
   const validateHand = () => setGame((oldGame) => oldGame.validateHand());
@@ -30,7 +30,10 @@ const GameBoard = () => {
   const startCount = () => setGame((oldGame) => oldGame.startCount());
   const oneSecond = () => setGame((oldGame) => oldGame.addASecond());
 
-  const resetGame = () => setGame((oldGame) => oldGame.resetGame());
+  const resetGame = () => {
+    setBoardSize(0);
+    setGame((oldGame) => oldGame.resetGame());
+  };
 
   const overtime = () => setGame((oldGame) => oldGame.gameOver());
   useEffect(() => {
@@ -94,6 +97,8 @@ const GameBoard = () => {
           return <CountUp />;
         case GameMode.COUNT_DOWN:
           return <CountDown />;
+        default:
+          return <CountUp />;
       }
     } else {
       return (
@@ -144,7 +149,7 @@ const GameBoard = () => {
               variant="contained"
               size="large"
             >
-              Retour
+              {game.won ? "Retour" : "Arrêter"}
             </Button>
           </Container>
         </>

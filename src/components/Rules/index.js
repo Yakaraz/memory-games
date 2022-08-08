@@ -6,8 +6,8 @@ const Rules = () => (
     sx={{
       backgroundColor: "#FFFFFF",
       borderRadius: "40px",
-      padding: "2em 1em 2em 2em",
-      margin: "22em 2em 0 2em",
+      paddingY: "3em",
+      marginTop: "22em",
     }}
   >
     <Typography
@@ -27,7 +27,6 @@ const Rules = () => (
       fontStyle="normal"
       fontSize="24px"
       fontWeight="400"
-      maxWidth="67ch"
     >
       Retrouvez toutes les{" "}
       <Typography
