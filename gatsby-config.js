@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `memory-games`,
-    siteUrl: `https://www.yourdomain.tld`,
+    siteUrl: `https://memory.paulsouchet.fr`,
   },
   plugins: [
     "gatsby-plugin-image",

@@ -10,7 +10,10 @@ const ImagesInput = () => {
 
   const uploadFiles = async (images) => {
     if (images.length) {
-      const newImages = [...images].map((file) => ({
+      const filteredImages = images.filter((image) =>
+        ["image/jpeg", "image/png"].includes(image.type)
+      );
+      const newImages = [...filteredImages].map((file) => ({
         file,
         uuid: uuidv4(),
       }));
@@ -39,7 +42,7 @@ const ImagesInput = () => {
       <label htmlFor="raised-button-file">
         <div {...getRootProps()}>
           <input
-            accept="image/*"
+            accept="image/jpg,image/png,image/jpeg"
             style={{ display: "none" }}
             id="raised-button-file"
             multiple
