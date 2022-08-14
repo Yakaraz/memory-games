@@ -32,7 +32,13 @@ const Game = () => {
         setScores(storedScores);
       }
     };
+
     fetchData();
+
+    return (images) =>
+      images.forEach((element) => {
+        URL.revokeObjectURL(element.url);
+      });
   }, []);
 
   return (

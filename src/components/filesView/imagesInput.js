@@ -1,12 +1,12 @@
 import React, { useCallback, useContext } from "react";
-import { Box, Typography } from "@mui/material";
+import { Alert, Box, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../db";
 import { GameContext } from "../game";
 
 const ImagesInput = () => {
-  const { setImages } = useContext(GameContext);
+  const { setImages, setBoardSize } = useContext(GameContext);
 
   const uploadFiles = async (images) => {
     if (images.length) {
@@ -30,26 +30,37 @@ const ImagesInput = () => {
           url: URL.createObjectURL(image.file),
         })),
       ]);
+      setBoardSize(0);
     }
   };
   const onDrop = useCallback((acceptedFiles) => {
     uploadFiles(acceptedFiles);
   }, []);
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { fileRejections, getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
+    },
+  });
 
   return (
     <>
       <label htmlFor="raised-button-file">
         <div {...getRootProps()}>
           <input
-            accept="image/jpg,image/png,image/jpeg"
+            type="file"
             style={{ display: "none" }}
             id="raised-button-file"
             multiple
-            type="file"
             onChange={(e) => uploadFiles(e.target.files)}
             {...getInputProps()}
           />
+          {fileRejections.length > 0 && (
+            <Alert severity="warning">
+              Seules les images .jpg, .jpeg et .png sont prises en charge.
+            </Alert>
+          )}
           <Box
             sx={{
               height: "150px",
