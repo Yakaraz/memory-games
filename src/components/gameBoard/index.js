@@ -19,8 +19,15 @@ import { db } from "../../db";
 const GAME_LENGTH = 100;
 
 const GameBoard = () => {
-  const { game, setGame, images, boardSize, setBoardSize, setScores } =
-    useContext(GameContext);
+  const {
+    game,
+    setGame,
+    images,
+    boardSize,
+    setBoardSize,
+    setScores,
+    useDefaultImages,
+  } = useContext(GameContext);
   const flipCard = (uuid) => setGame((oldGame) => oldGame.flipCard(uuid));
   const validateHand = () => setGame((oldGame) => oldGame.validateHand());
   const emptyHand = () => setGame((oldGame) => oldGame.emptyHand());
@@ -37,13 +44,74 @@ const GameBoard = () => {
 
   const overtime = () => setGame((oldGame) => oldGame.gameOver());
   useEffect(() => {
-    let imagesClone = cloneDeep(images);
+    let imagesClone;
+    if (useDefaultImages) {
+      imagesClone = [
+        {
+          uuid: uuidv4(),
+          name: "Circle.png",
+          url: "default/Circle.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Gear.png",
+          url: "default/Gear.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Heart.png",
+          url: "default/Heart.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Pentagone.png",
+          url: "default/Pentagone.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "RadialSpread.png",
+          url: "default/RadialSpread.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Ring.png",
+          url: "default/Ring.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Saw.png",
+          url: "default/Saw.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Snow.png",
+          url: "default/Snow.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Square.png",
+          url: "default/Square.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Star.png",
+          url: "default/Star.png",
+        },
+        {
+          uuid: uuidv4(),
+          name: "Triangle.png",
+          url: "default/Triangle.png",
+        },
+      ];
+    } else {
+      imagesClone = cloneDeep(images);
+    }
     imagesClone = shuffle(imagesClone);
     const pool = take(imagesClone, boardSize / 2);
     const newImages = concat(pool, pool);
     const deck = shuffle(newImages.map((img) => new Card(img)));
     setDeck(deck);
-  }, [boardSize]);
+  }, [boardSize, useDefaultImages]);
 
   useEffect(() => {
     let timeout;
@@ -131,9 +199,11 @@ const GameBoard = () => {
             }}
             variant="contained"
             size="large"
-            disabled={boardSize === 0 || images.length < 3}
+            disabled={
+              (boardSize === 0 || images.length < 3) && !useDefaultImages
+            }
           >
-            Start Game
+            Jouer
           </Button>
         )}
       </Container>

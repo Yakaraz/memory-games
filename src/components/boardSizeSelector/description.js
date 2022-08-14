@@ -36,7 +36,7 @@ const Description = () => (
       </Typography>
       Choisissez le nombre de photos à reconnaître.
     </Typography>
-    <Typography
+    {/* <Typography
       component="span"
       color="secondary"
       fontFamily="Inter"
@@ -56,7 +56,7 @@ const Description = () => (
       >
         Par défaut, nous choisirons le nombre maximal d’images.
       </Typography>
-    </Typography>
+    </Typography> */}
   </Box>
 );
 

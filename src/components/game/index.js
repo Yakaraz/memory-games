@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "@mui/system";
+import { Container } from "@mui/material";
 import FilesView from "../filesView";
 import BoardSizeSelector from "../boardSizeSelector";
 import { GameModel } from "../../models/game.model";
@@ -14,6 +14,7 @@ const Game = () => {
   const [images, setImages] = useState([]);
   const [boardSize, setBoardSize] = useState(0);
   const [scores, setScores] = useState([]);
+  const [useDefaultImages, setUseDefaultImages] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +53,8 @@ const Game = () => {
         setBoardSize,
         scores,
         setScores,
+        useDefaultImages,
+        setUseDefaultImages,
       }}
     >
       <Container>
