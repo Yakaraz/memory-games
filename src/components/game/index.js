@@ -37,6 +37,7 @@ const Game = () => {
     fetchData();
 
     return (images) =>
+      images &&
       images.forEach((element) => {
         URL.revokeObjectURL(element.url);
       });
